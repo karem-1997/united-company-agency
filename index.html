@@ -3292,7 +3292,6 @@ function generateTxnCode() {
                         }
                     });
                     if (!match) { localStorage.removeItem('ali_recharge_remember'); return; }
-                    // اقرأ الرصيد من الداتابيز مباشرة بدل الاعتماد على المتغير (عشان مشكلة التوقيت)
                     return db.ref('shared_staff_balance').once('value').then(bSnap => {
                         const bal = parseFloat(bSnap.val()) || 0;
                         if (bal <= 0) { showToast('⚠️ الرصيد المشترك صفر.'); return; }
@@ -3307,7 +3306,7 @@ function generateTxnCode() {
                         updateStaffBalanceUI();
                         showToast('👋 مرحباً بعودتك، ' + match.username + '!');
                     });
-                }).catch(() => { /* keep saved session for next time */ });
+                }).catch(() => { });
             } else if (data.type === 'admin') {
                 if (data.password === "1987") {
                     document.getElementById('loginPage').classList.remove('active');
@@ -3963,7 +3962,7 @@ function notifyManualShipment(clientName, clientId, amount, destination, charged
             '\uD83D\uDCB0 *\u0627\u0644\u0645\u0628\u0644\u063A:* ' + amount + ' $\n' +
             '\uD83C\uDFAF *\u0627\u0644\u0648\u062C\u0647\u0629:* ' + destText + '\n' +
             '\uD83D\uDC8E *\u0627\u0644\u0631\u0635\u064A\u062F:* ' + balance + ' $\n' +
-            '\uD83D\uDCC9 *\u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 \u0627\u0644\u062C\u062F\u064A\u062F\u0629:* ' + debt + ' $\n' +
+            '\uD83D\uDCC9 *\u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629:* ' + debt + ' $\n' +
             '\uD83D\uDC54 *\u0627\u0644\u0645\u0648\u0638\u0641:* ' + staffName + '\n' +
             '\u23F0 *\u0627\u0644\u0648\u0642\u062A:* ' + time;
 
@@ -4115,19 +4114,9 @@ function notifyRequestApproved(requestData, staffName) {
             snap.forEach(child => { userData = child.val() || {}; });
             const balance = (userData.balance || 0).toFixed(2);
             const debt = (userData.debt || 0).toFixed(2);
-            const appInfo = requestData.appName ? '\uD83C\uDFAE *\u0627\u0644\u0628\u0631\u0646\u0627\u0645\u062C:* ' + requestData.appName + '\n' : '';
-            const destText = requestData.destination === 'self' ? '\u0644\u0646\u0641\u0633\u0647' : '\u0644\u0644\u063A\u064A\u0631 (' + requestData.targetId + ')';
-            const message =
-                '\u2705 *\u062A\u0645\u062A \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0639\u0644\u0649 \u0637\u0644\u0628 \u0634\u062D\u0646*\n\n' +
-                '\uD83D\uDC64 *\u0627\u0644\u0639\u0645\u064A\u0644:* ' + requestData.userName + '\n' +
-                '\uD83C\uDD94 *ID:* ' + requestData.userId + '\n' +
-                appInfo +
-                '\uD83D\uDCB0 *\u0627\u0644\u0645\u0628\u0644\u063A:* ' + requestData.amount + ' $\n' +
-                '\uD83C\uDFAF *\u0627\u0644\u0648\u062C\u0647\u0629:* ' + destText + '\n' +
-                '\uD83D\uDC8E *\u0627\u0644\u0631\u0635\u064A\u062F:* ' + balance + ' $\n' +
-                '\uD83D\uDCC9 *\u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 \u0627\u0644\u062C\u062F\u064A\u062F\u0629:* ' + debt + ' $\n' +
-                '\uD83D\uDC54 *\u062A\u0645\u062A \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0628\u0648\u0627\u0633\u0637\u0629:* ' + staffName + '\n' +
-                '\u23F0 *\u0627\u0644\u0648\u0642\u062A:* ' + new Date().toLocaleString('ar-EG');
+            const appInfo = requestData.appName ? '🎮 *البرنامج:* ' + requestData.appName + '\n' : '';
+            const destText = requestData.destination === 'self' ? 'لنفسه' : 'للغير (' + requestData.targetId + ')';
+            const message = '✅ *تمت الموافقة على طلب شحن*\n\n👤 *العميل:* ' + requestData.userName + '\n🆔 *ID:* ' + requestData.userId + '\n' + appInfo + '💰 *المبلغ:* ' + requestData.amount + ' $\n🎯 *الوجهة:* ' + destText + '\n💎 *الرصيد:* ' + balance + ' $\n📉 *المديونية الجديدة:* ' + debt + ' $\n👔 *تمت الموافقة بواسطة:* ' + staffName + '\n⏰ *الوقت:* ' + new Date().toLocaleString('ar-EG');
             sendTelegramToAllActiveBots(message);
         });
     }
@@ -4421,7 +4410,7 @@ function notifyRequestApproved(requestData, staffName) {
 
             // Build WhatsApp message
             const nowStr = new Date().toLocaleString('ar-EG');
-            let waMsg = '*\uD83D\uDCCB \u0641\u062D\u0635 \u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 - \u0648\u0643\u0627\u0644\u0629 \u0627\u0644\u0645\u0644\u0648\u0643 \uD83D\uDC51*\n\n';
+            let waMsg = '*\uD83D\uDCCB \u0641\u062D\u0635 \u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 - \u0627\u0644\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u062A\u062D\u062F\u0629 \uD83D\uDC51*\n\n';
             waMsg += '\uD83D\uDC64 *\u0627\u0644\u0639\u0645\u064A\u0644:* ' + found.name + '\n';
             waMsg += '\uD83C\uDD94 *ID:* ' + found.id + '\n';
             if (found.whatsapp) waMsg += '\uD83D\uDCF1 *\u0648\u0627\u062A\u0633\u0627\u0628:* ' + found.whatsapp + '\n';
@@ -4438,7 +4427,7 @@ function notifyRequestApproved(requestData, staffName) {
                 waMsg += '\uD83D\uDCCA *\u0639\u062F\u062F \u0627\u0644\u0634\u062D\u0646\u0627\u062A \u0641\u064A \u0627\u0644\u0641\u062A\u0631\u0629:* ' + filteredLogs.length + '\n';
             }
             waMsg += '\n\u23F0 *\u062A\u0627\u0631\u064A\u062E \u0627\u0644\u0641\u062D\u0635:* ' + nowStr + '\n';
-            waMsg += '\n\uD83D\uDE4F \u0634\u0643\u0631\u0627\u064B \u0644\u062B\u0642\u062A\u0643\u0645 \u0628\u0640 \u0648\u0643\u0627\u0644\u0629 \u0627\u0644\u0645\u0644\u0648\u0643 \uD83D\uDC51';
+            waMsg += '\n\uD83D\uDE4F \u0634\u0643\u0631\u0627\u064B \u0644\u062B\u0642\u062A\u0643\u0645 \u0628\u0640 \u0627\u0644\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u062A\u062D\u062F\u0629 \uD83D\uDC51';
             const waPhone = found.whatsapp || (userAccLookup && userAccLookup.whatsapp ? userAccLookup.whatsapp : '');
             const waLink = waPhone ? 'https://api.whatsapp.com/send?phone=' + waPhone + '&text=' + encodeURIComponent(waMsg) : '';
 
@@ -4776,8 +4765,10 @@ function parseLogDate(dateStr) {
         if (!pendingDeleteLogKey || !pendingDeleteLogClientId) { cancelDelete(); return; }
         const logRef = db.ref('shipping_logs/' + pendingDeleteLogKey);
         const clientRef = db.ref('clients/' + pendingDeleteLogClientId);
+        let deletedLogData = null;
         logRef.once('value').then((logSnapshot) => {
             const logData = logSnapshot.val();
+            deletedLogData = logData;
             let promises = [];
             promises.push(returnStaffBalance(pendingDeleteLogAmount, logData));
             promises.push(clientRef.once('value').then((snapshot) => {
@@ -4804,9 +4795,39 @@ function parseLogDate(dateStr) {
             promises.push(logRef.remove());
             return Promise.all(promises);
         }).then(() => {
+            notifyShipmentDeleted(deletedLogData, pendingDeleteLogAmount, currentLoggedStaff || 'المدير');
             alert('✅ تم حذف الشحنة بنجاح!\n\n• خصم ' + pendingDeleteLogAmount + '$ من المديونية\n• تم إرجاع المبلغ للرصيد المشترك\n• تم الحذف من جميع الجداول');
             cancelDelete(); lookupDebtById();
         }).catch((error) => { console.error("Delete error:", error); alert("❌ حدث خطأ أثناء الحذف: " + error.message); cancelDelete(); });
+    }
+
+    // ======= Telegram Notification: Shipment Deleted =======
+    function notifyShipmentDeleted(logData, amount, deletedBy) {
+        const clientName = (logData && logData.clientName) ? logData.clientName : '';
+        const clientId = (logData && logData.clientId) ? logData.clientId : '';
+        const destRaw = (logData && logData.destination) ? logData.destination : '';
+        const destText = (destRaw === 'لنفسه' || destRaw === 'self') ? 'لنفسه' : 'للغير (' + ((logData && logData.chargedId) ? logData.chargedId : '') + ')';
+        const sourceText = (logData && logData.source === 'user_portal') ? '🎯 بوابة المستخدم' : '👔 شحن يدوي (لوحة الموظف)';
+        const originalTime = (logData && logData.time) ? logData.time : '---';
+        const deleteTime = new Date().toLocaleDateString('en-US') + ', ' + new Date().toLocaleTimeString('en-US');
+        const buildMsg = (balance, debt) =>
+            '🗑️ *تم حذف شحنة*\n\n' +
+            '👤 *العميل:* ' + clientName + '\n' +
+            '🆔 *ID:* ' + clientId + '\n' +
+            '💰 *المبلغ المحذوف:* ' + parseFloat(amount).toFixed(2) + ' $\n' +
+            '🎯 *الوجهة:* ' + destText + '\n' +
+            '📦 *المصدر:* ' + sourceText + '\n' +
+            '📉 *المديونية بعد الحذف:* ' + debt + ' $\n' +
+            '💎 *الرصيد:* ' + balance + ' $\n' +
+            '🔄 *تم إرجاع المبلغ للرصيد المشترك*\n' +
+            '👔 *تم الحذف بواسطة:* ' + deletedBy + '\n' +
+            '🕐 *وقت الشحنة الأصلية:* ' + originalTime + '\n' +
+            '⏰ *وقت الحذف:* ' + deleteTime;
+        db.ref('user_accounts').orderByChild('id').equalTo(clientId).once('value').then(snap => {
+            let data = {};
+            snap.forEach(child => { data = child.val() || {}; });
+            sendTelegramToAllActiveBots(buildMsg((data.balance || 0).toFixed(2), (data.debt || 0).toFixed(2)));
+        }).catch(() => { sendTelegramToAllActiveBots(buildMsg('—', '—')); });
     }
 
     function clearAllStaffTransactions() {
