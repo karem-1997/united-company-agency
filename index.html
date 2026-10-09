@@ -3291,13 +3291,13 @@ function generateTxnCode() {
                             match = s;
                         }
                     });
-                    if (match) {
-                        if (sharedStaffBalance <= 0) {
-                            localStorage.removeItem('ali_recharge_remember');
-                            showToast('⚠️ الرصيد المشترك صفر.');
-                            return;
-                        }
+                    if (!match) { localStorage.removeItem('ali_recharge_remember'); return; }
+                    // اقرأ الرصيد من الداتابيز مباشرة بدل الاعتماد على المتغير (عشان مشكلة التوقيت)
+                    return db.ref('shared_staff_balance').once('value').then(bSnap => {
+                        const bal = parseFloat(bSnap.val()) || 0;
+                        if (bal <= 0) { showToast('⚠️ الرصيد المشترك صفر.'); return; }
                         currentLoggedStaff = match.username;
+                        sharedStaffBalance = bal;
                         document.getElementById('loginPage').classList.remove('active');
                         document.getElementById('dashboardPage').classList.add('active');
                         document.getElementById('staffBadge').innerHTML = 'الموظف المسؤول: <strong>' + currentLoggedStaff + '</strong>';
@@ -3306,10 +3306,8 @@ function generateTxnCode() {
                         loadClientsDropdown();
                         updateStaffBalanceUI();
                         showToast('👋 مرحباً بعودتك، ' + match.username + '!');
-                    } else {
-                        localStorage.removeItem('ali_recharge_remember');
-                    }
-                }).catch(() => { localStorage.removeItem('ali_recharge_remember'); });
+                    });
+                }).catch(() => { /* keep saved session for next time */ });
             } else if (data.type === 'admin') {
                 if (data.password === "1987") {
                     document.getElementById('loginPage').classList.remove('active');
@@ -3953,9 +3951,6 @@ function notifyRequestApproved(requestData, staffName) {
 }
 
 function notifyManualShipment(clientName, clientId, amount, destination, chargedId, staffName, time) {
-    const userAcc = userAccounts.find(u => u.id === clientId);
-    const userKey = userAcc ? userAcc._key : null;
-
     const sendMsg = (balance, debt) => {
         const destText = destination === 'self' || destination === '\u0644\u0646\u0641\u0633\u0647' 
             ? '\u0644\u0646\u0641\u0633\u0647' 
@@ -3968,21 +3963,18 @@ function notifyManualShipment(clientName, clientId, amount, destination, charged
             '\uD83D\uDCB0 *\u0627\u0644\u0645\u0628\u0644\u063A:* ' + amount + ' $\n' +
             '\uD83C\uDFAF *\u0627\u0644\u0648\u062C\u0647\u0629:* ' + destText + '\n' +
             '\uD83D\uDC8E *\u0627\u0644\u0631\u0635\u064A\u062F:* ' + balance + ' $\n' +
-            '\uD83D\uDCC9 *\u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629:* ' + debt + ' $\n' +
+            '\uD83D\uDCC9 *\u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 \u0627\u0644\u062C\u062F\u064A\u062F\u0629:* ' + debt + ' $\n' +
             '\uD83D\uDC54 *\u0627\u0644\u0645\u0648\u0638\u0641:* ' + staffName + '\n' +
             '\u23F0 *\u0627\u0644\u0648\u0642\u062A:* ' + time;
 
         sendTelegramToAllActiveBots(message);
     };
 
-    if (userKey) {
-        db.ref('user_accounts/' + userKey).once('value').then(snap => {
-            const data = snap.val() || {};
-            sendMsg((data.balance || 0).toFixed(2), (data.debt || 0).toFixed(2));
-        }).catch(() => sendMsg('\u2014', '\u2014'));
-    } else {
-        sendMsg('\u2014', '\u2014');
-    }
+    db.ref('user_accounts').orderByChild('id').equalTo(clientId).once('value').then(snap => {
+        let data = {};
+        snap.forEach(child => { data = child.val() || {}; });
+        sendMsg((data.balance || 0).toFixed(2), (data.debt || 0).toFixed(2));
+    }).catch(() => sendMsg('\u2014', '\u2014'));
 }
 
 function notifyPartialPayment(clientName, clientId, amount, previousDebt, newDebt, note, adminName, time) {
@@ -4118,9 +4110,26 @@ function sendToGoogleSheet(actionType, payload) {
 }
 
 function notifyRequestApproved(requestData, staffName) {
-        const appInfo = requestData.appName ? '🎮 *البرنامج:* ' + requestData.appName + '\n' : '';
-        const message = '✅ *تمت الموافقة على طلب شحن*\n\n👤 *العميل:* ' + requestData.userName + '\n' + appInfo + '💰 *المبلغ:* ' + requestData.amount + ' $\n👔 *تمت الموافقة بواسطة:* ' + staffName + '\n⏰ *الوقت:* ' + new Date().toLocaleString('ar-EG');
-        sendTelegramToAllActiveBots(message);
+        db.ref('user_accounts').orderByChild('id').equalTo(requestData.userId).once('value').then(snap => {
+            let userData = {};
+            snap.forEach(child => { userData = child.val() || {}; });
+            const balance = (userData.balance || 0).toFixed(2);
+            const debt = (userData.debt || 0).toFixed(2);
+            const appInfo = requestData.appName ? '\uD83C\uDFAE *\u0627\u0644\u0628\u0631\u0646\u0627\u0645\u062C:* ' + requestData.appName + '\n' : '';
+            const destText = requestData.destination === 'self' ? '\u0644\u0646\u0641\u0633\u0647' : '\u0644\u0644\u063A\u064A\u0631 (' + requestData.targetId + ')';
+            const message =
+                '\u2705 *\u062A\u0645\u062A \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0639\u0644\u0649 \u0637\u0644\u0628 \u0634\u062D\u0646*\n\n' +
+                '\uD83D\uDC64 *\u0627\u0644\u0639\u0645\u064A\u0644:* ' + requestData.userName + '\n' +
+                '\uD83C\uDD94 *ID:* ' + requestData.userId + '\n' +
+                appInfo +
+                '\uD83D\uDCB0 *\u0627\u0644\u0645\u0628\u0644\u063A:* ' + requestData.amount + ' $\n' +
+                '\uD83C\uDFAF *\u0627\u0644\u0648\u062C\u0647\u0629:* ' + destText + '\n' +
+                '\uD83D\uDC8E *\u0627\u0644\u0631\u0635\u064A\u062F:* ' + balance + ' $\n' +
+                '\uD83D\uDCC9 *\u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 \u0627\u0644\u062C\u062F\u064A\u062F\u0629:* ' + debt + ' $\n' +
+                '\uD83D\uDC54 *\u062A\u0645\u062A \u0627\u0644\u0645\u0648\u0627\u0641\u0642\u0629 \u0628\u0648\u0627\u0633\u0637\u0629:* ' + staffName + '\n' +
+                '\u23F0 *\u0627\u0644\u0648\u0642\u062A:* ' + new Date().toLocaleString('ar-EG');
+            sendTelegramToAllActiveBots(message);
+        });
     }
 
     
