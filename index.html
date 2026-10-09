@@ -2815,6 +2815,7 @@ function generateTxnCode() {
             '<td><button class="btn-danger" style="padding:5px;background:var(--accent-blue);" onclick="settleDebt(&quot;' + child.key + '&quot;,&quot;' + cl.name + '&quot;)">تصفير</button>' +
             '<button class="btn-success" style="padding:5px;font-size:11px;margin:2px;" onclick="openPartialPaymentModal(&quot;' + child.key + '&quot;,&quot;' + cl.name + '&quot;,' + (cl.debt || 0) + ')">💵 دفع جزئي</button>' +
             '<button class="btn-blue" style="padding:5px;font-size:11px;margin:2px;" onclick="viewClientPayments(&quot;' + child.key + '&quot;,&quot;' + cl.name + '&quot;)">📋 سجل الدفعات</button>' +
+            '<button class="btn-warning" style="padding:5px;font-size:11px;margin:2px;" onclick="editClientWhatsapp(&quot;' + child.key + '&quot;,&quot;' + cl.name + '&quot;,&quot;' + (cl.whatsapp || '') + '&quot;)">📱 واتساب</button>' +
             '<button class="btn-danger" style="padding:5px;" onclick="deleteClient(&quot;' + child.key + '&quot;,&quot;' + cl.name + '&quot;)">حذف</button></td></tr>';
         });
     });
@@ -2828,6 +2829,7 @@ function generateTxnCode() {
             const waLink2 = ua.whatsapp ? '<a href="https://api.whatsapp.com/send?phone=' + ua.whatsapp + '" target="_blank" style="color:var(--success-color);font-weight:700;">' + ua.whatsapp + '</a>' : '—';
             if(tbody) tbody.innerHTML += '<tr><td>' + ua.name + '</td><td>' + ua.id + '</td><td>' + ua.password + '</td><td>' + waLink2 + '</td><td style="color:var(--success-color);font-weight:700;">' + (ua.balance || 0) + '$</td><td>' + (ua.debt || 0) + '$</td>' +
             '<td><button class="btn-gold" style="padding:5px;font-size:11px;margin:2px;" onclick="openBalanceModal(&quot;' + child.key + '&quot;,&quot;' + ua.name + '&quot;,' + (ua.balance || 0) + ')">💰 إضافة</button>' + '<button class="btn-blue" style="padding:5px;font-size:11px;margin:2px;" onclick="openEditBalanceModal(&quot;' + child.key + '&quot;,&quot;' + ua.name + '&quot;,' + (ua.balance || 0) + ')">✏️ تعديل</button>' + '<button class="btn-success" style="padding:5px;font-size:11px;margin:2px;" onclick="openEditWhatsappModal(&quot;' + child.key + '&quot;,&quot;' + ua.name + '&quot;,&quot;' + (ua.whatsapp || '') + '&quot;)">📱 واتساب</button>' + '<button class="btn-warning" style="padding:5px;font-size:11px;margin:2px;" onclick="openUserTxnModal(&quot;' + child.key + '&quot;,&quot;' + ua.name + '&quot;)">📋 سجل</button>' +
+            '<button class="btn-gold" style="padding:5px;font-size:11px;margin:2px;" onclick="editUserWhatsapp(&quot;' + child.key + '&quot;,&quot;' + ua.name + '&quot;,&quot;' + (ua.whatsapp || '') + '&quot;,&quot;' + ua.id + '&quot;)">📱 واتساب</button>' +
             '<button class="btn-danger" style="padding:5px;font-size:11px;margin:2px;" onclick="deleteUserAccount(&quot;' + child.key + '&quot;,&quot;' + ua.name + '&quot;)">🗑️ حذف</button></td></tr>';
         });
         if(currentLoggedUser) {
@@ -3766,6 +3768,34 @@ function generateTxnCode() {
         });
     }
 
+    // ======= Edit WhatsApp Number =======
+    function editClientWhatsapp(clientKey, clientName, current) {
+        const newNum = prompt('📱 تعديل رقم واتساب العميل: ' + clientName + '\n\nالرقم الحالي: ' + (current || 'غير مسجل') + '\n\nاكتب الرقم الجديد مع كود الدولة بدون + أو مسافات\nمثال: 201025404302', current || '');
+        if (newNum === null) return;
+        const clean = newNum.replace(/[^0-9]/g, '');
+        if (!clean) { showToast('❌ لم يتم إدخال رقم صحيح'); return; }
+        db.ref('clients/' + clientKey).update({ whatsapp: clean }).then(() => {
+            const client = clientsDatabase.find(c => c._key === clientKey);
+            if (client) {
+                const ua = userAccounts.find(u => u.id === client.id);
+                if (ua) db.ref('user_accounts/' + ua._key).update({ whatsapp: clean });
+            }
+            showToast('✅ تم تحديث رقم الواتاب بنجاح!');
+        }).catch(err => { alert('❌ خطأ: ' + err.message); });
+    }
+
+    function editUserWhatsapp(userKey, userName, current, userId) {
+        const newNum = prompt('📱 تعديل رقم واتساب المستخدم: ' + userName + '\n\nالرقم الحالي: ' + (current || 'غير مسجل') + '\n\nاكتب الرقم الجديد مع كود الدولة بدون + أو مسافات\nمثال: 201025404302', current || '');
+        if (newNum === null) return;
+        const clean = newNum.replace(/[^0-9]/g, '');
+        if (!clean) { showToast('❌ لم يتم إدخال رقم صحيح'); return; }
+        db.ref('user_accounts/' + userKey).update({ whatsapp: clean }).then(() => {
+            const cl = clientsDatabase.find(c => c.id === userId);
+            if (cl && cl._key) db.ref('clients/' + cl._key).update({ whatsapp: clean });
+            showToast('✅ تم تحديث رقم الواتساب بنجاح!');
+        }).catch(err => { alert('❌ خطأ: ' + err.message); });
+    }
+
     function deleteClient(key, name) {
     if(!confirm("⚠️ هل أنت متأكد من حذف العميل: " + name + " نهائياً؟\n\nسيتم حذف:\n• بيانات العميل\n• الحساب المرتبط (إن وجد)\n• الطلبات\n• سجل المعاملات")) return;
 
@@ -3969,11 +3999,15 @@ function notifyManualShipment(clientName, clientId, amount, destination, charged
         sendTelegramToAllActiveBots(message);
     };
 
-    db.ref('user_accounts').orderByChild('id').equalTo(clientId).once('value').then(snap => {
-        let data = {};
-        snap.forEach(child => { data = child.val() || {}; });
-        sendMsg((data.balance || 0).toFixed(2), (data.debt || 0).toFixed(2));
-    }).catch(() => sendMsg('\u2014', '\u2014'));
+    Promise.all([
+        db.ref('clients/' + clientId).once('value'),
+        db.ref('user_accounts').orderByChild('id').equalTo(clientId).once('value')
+    ]).then(function(results) {
+        const cData = results[0].val() || {};
+        let uData = {};
+        results[1].forEach(function(child) { uData = child.val() || {}; });
+        sendMsg((uData.balance || 0).toFixed(2), (cData.debt || 0).toFixed(2));
+    }).catch(function() { sendMsg('\u2014', '\u2014'); });
 }
 
 function notifyPartialPayment(clientName, clientId, amount, previousDebt, newDebt, note, adminName, time) {
@@ -4823,11 +4857,15 @@ function parseLogDate(dateStr) {
             '👔 *تم الحذف بواسطة:* ' + deletedBy + '\n' +
             '🕐 *وقت الشحنة الأصلية:* ' + originalTime + '\n' +
             '⏰ *وقت الحذف:* ' + deleteTime;
-        db.ref('user_accounts').orderByChild('id').equalTo(clientId).once('value').then(snap => {
-            let data = {};
-            snap.forEach(child => { data = child.val() || {}; });
-            sendTelegramToAllActiveBots(buildMsg((data.balance || 0).toFixed(2), (data.debt || 0).toFixed(2)));
-        }).catch(() => { sendTelegramToAllActiveBots(buildMsg('—', '—')); });
+        Promise.all([
+            db.ref('clients/' + clientId).once('value'),
+            db.ref('user_accounts').orderByChild('id').equalTo(clientId).once('value')
+        ]).then(function(results) {
+            const cData = results[0].val() || {};
+            let uData = {};
+            results[1].forEach(function(child) { uData = child.val() || {}; });
+            sendTelegramToAllActiveBots(buildMsg((uData.balance || 0).toFixed(2), (cData.debt || 0).toFixed(2)));
+        }).catch(function() { sendTelegramToAllActiveBots(buildMsg('—', '—')); });
     }
 
     function clearAllStaffTransactions() {
