@@ -1117,6 +1117,105 @@
     0%, 100% { box-shadow: 0 4px 20px rgba(255,215,0,0.4); }
     50% { box-shadow: 0 4px 30px rgba(255,215,0,0.7); }
 }
+
+/* ====== CAT MODE (Cheeky Cat) ====== */
+[data-theme="cat"] {
+    --bg-color: #140b06;
+    --card-bg: rgba(28,16,9,0.2);
+    --primary-color: #ff8c42;
+    --primary-light: #ffab73;
+    --primary-dark: #cc6524;
+    --accent-gold: #ffd166;
+    --accent-blue: #4ecdc4;
+    --accent-green: #06d6a0;
+    --accent-purple: #b5838d;
+    --text-color: #fff5ec;
+    --text-secondary: #e0c9b8;
+    --text-muted: #8a7466;
+    --input-bg: rgba(28,16,9,0.2);
+    --border-color: rgba(255,140,66,0.3);
+    --glass-bg: rgba(28,16,9,0.2);
+    --glass-border: rgba(255,140,66,0.25);
+    --success-color: #06d6a0;
+    --warning-color: #ffb703;
+    --danger-color: #ef476f;
+    --shadow-glow: 0 0 30px rgba(255,140,66,0.15);
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.65);
+}
+
+[data-theme="cat"] body {
+    background: url('https://i.postimg.cc/yYJxWPfN/file-00000000b4d48208b595f06da1df00b9.png') center center / cover no-repeat fixed;
+}
+
+[data-theme="cat"] body::before {
+    background: radial-gradient(circle at 20% 50%, rgba(255,140,66,0.14) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(181,131,141,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255,209,102,0.08) 0%, transparent 50%);
+}
+
+[data-theme="cat"] .container {
+    background: rgba(28,16,9,0.2);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    border-color: rgba(255,140,66,0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.65), 0 0 30px rgba(255,140,66,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+[data-theme="cat"] .container:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 60px rgba(255,140,66,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+[data-theme="cat"] h2, [data-theme="cat"] h3 {
+    color: var(--primary-color);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(255,140,66,0.5);
+}
+
+[data-theme="cat"] input[type="text"], [data-theme="cat"] input[type="password"],
+[data-theme="cat"] input[type="number"], [data-theme="cat"] input[type="date"],
+[data-theme="cat"] input[type="url"], [data-theme="cat"] select {
+    background: rgba(28,16,9,0.2);
+    color: #fff5ec;
+    border-color: rgba(255,140,66,0.25);
+}
+
+[data-theme="cat"] input:focus, [data-theme="cat"] select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(255,140,66,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+[data-theme="cat"] .radio-box { background: rgba(28,16,9,0.2); }
+[data-theme="cat"] .radio-box label { color: #fff5ec; }
+[data-theme="cat"] .box-light { background: rgba(28,16,9,0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+[data-theme="cat"] .search-container { background: rgba(28,16,9,0.2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+[data-theme="cat"] .search-result-box { background: rgba(28,16,9,0.25); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+[data-theme="cat"] .admin-table td { background: rgba(255,140,66,0.03); }
+[data-theme="cat"] .user-orders-table td { background: rgba(255,140,66,0.03); }
+[data-theme="cat"] .txn-table td { background: rgba(255,140,66,0.03); }
+[data-theme="cat"] .app-card { background: rgba(255,140,66,0.05); }
+[data-theme="cat"] .user-request-form { background: rgba(28,16,9,0.2); }
+[data-theme="cat"] .notifications-panel { background: rgba(28,16,9,0.25); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+[data-theme="cat"] .notification-item { background: rgba(255,140,66,0.05); }
+[data-theme="cat"] .hamburger-menu { background: rgba(255,140,66,0.08); }
+[data-theme="cat"] .login-menu-panel { background: linear-gradient(180deg, #241209 0%, #140b06 100%); border-left-color: var(--primary-color); }
+[data-theme="cat"] .login-menu-item:hover { background: rgba(255,140,66,0.12); }
+[data-theme="cat"] .delete-confirm-box, [data-theme="cat"] .balance-modal-box,
+[data-theme="cat"] .edit-balance-modal-box, [data-theme="cat"] .staff-balance-modal-box,
+[data-theme="cat"] .txn-modal-box { background: rgba(28,16,9,0.3); }
+[data-theme="cat"] .empty-state { color: #e0c9b8; }
+[data-theme="cat"] ::-webkit-scrollbar-thumb { background: var(--primary-color); }
+[data-theme="cat"] button { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); }
+[data-theme="cat"] button:hover { background: linear-gradient(135deg, var(--primary-light), var(--primary-color)); }
+
+[data-theme="cat"] .theme-toggle-btn {
+    background: linear-gradient(135deg, #ff8c42, #cc6524);
+    border-color: var(--primary-color);
+    animation: themePulseCat 3s ease-in-out infinite;
+}
+@keyframes themePulseCat {
+    0%, 100% { box-shadow: 0 4px 20px rgba(255,140,66,0.4); }
+    50% { box-shadow: 0 4px 30px rgba(255,140,66,0.7); }
+}
+
 /* ====== THEME TOGGLE BUTTON ====== */
 .theme-toggle-btn {
     position: fixed;
@@ -5030,6 +5129,9 @@ function toggleA(id) {
         if (savedTheme === 'light') {
             document.documentElement.setAttribute('data-theme', 'light');
             updateThemeIcon('light');
+        } else if (savedTheme === 'cat') {
+            document.documentElement.setAttribute('data-theme', 'cat');
+            updateThemeIcon('cat');
         } else if (savedTheme === 'royal') {
             document.documentElement.setAttribute('data-theme', 'royal');
             updateThemeIcon('royal');
@@ -5044,6 +5146,7 @@ function toggleA(id) {
         let newTheme;
         if (currentTheme === 'dark') { newTheme = 'light'; }
         else if (currentTheme === 'light') { newTheme = 'royal'; }
+        else if (currentTheme === 'royal') { newTheme = 'cat'; }
         else { newTheme = 'dark'; }
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('ali_recharge_theme', newTheme);
@@ -5051,6 +5154,7 @@ function toggleA(id) {
         let toastMsg = '🌙 تم تفعيل الوضع الليلي';
         if (newTheme === 'light') { toastMsg = '☀️ تم تفعيل الوضع النهاري'; }
         else if (newTheme === 'royal') { toastMsg = '👑 تم تفعيل الوضع الملكي'; }
+        else if (newTheme === 'cat') { toastMsg = '🐱 تم تفعيل وضع القطة الشقية'; }
         showToast(toastMsg);
     }
 
@@ -5059,6 +5163,7 @@ function toggleA(id) {
         if (icon) {
             if (theme === 'light') { icon.innerHTML = '&#127769;'; }
             else if (theme === 'royal') { icon.innerHTML = '&#128081;'; }
+            else if (theme === 'cat') { icon.innerHTML = '&#128008;'; }
             else { icon.innerHTML = '&#127774;'; }
         }
     }
