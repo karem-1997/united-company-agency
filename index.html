@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>United Agency | الشركة المتحده</title>
+    <title>Cheeky Cat Agency | القطة الشقية</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1393,7 +1393,7 @@
         <div class="login-menu-header">
             <div class="login-menu-close" onclick="toggleLoginMenu()">✕</div>
             <div style="font-size: 50px; margin-bottom: 5px; filter: drop-shadow(0 0 15px rgba(255,215,0,0.4));">👑</div>
-            <h3 style="color: var(--primary-color); font-size: 20px; margin: 0;">الشركة المتحده</h3>
+            <h3 style="color: var(--primary-color); font-size: 20px; margin: 0;">القطة الشقية</h3>
         </div>
         <div class="login-menu-item" onclick="showStaffLoginFromMenu()">
             <span class="menu-item-icon">💎</span>
@@ -1405,7 +1405,7 @@
         <div class="login-menu-item" onclick="showAdminLoginFromMenu()">
             <span class="menu-item-icon">👑</span>
             <div class="menu-item-text">
-                <div class="menu-item-title">وكالة الشركة المتحده - الثقة عنوان</div>
+                <div class="menu-item-title">وكالة القطة الشقية - الثقة عنوان</div>
             </div>
         </div>
         <div class="login-menu-footer">
@@ -1512,7 +1512,7 @@
         }
 </style>
 
-        <h2 class="login-title">وكالة الشركة المتحده</h2>
+        <h2 class="login-title">وكالة القطة الشقية</h2>
 
         <p class="login-subtitle">
             اطلب شحنتك الآن، واترك الباقي علينا.<br>
@@ -1604,7 +1604,7 @@
 
 <!-- STAFF DASHBOARD -->
     <div id="dashboardPage" class="form-page">
-        <h2>لوحة العمليات الشحن [United Agency]</h2>
+        <h2>لوحة العمليات الشحن [Cheeky Cat Agency]</h2>
         <div id="staffBadge" class="badge"></div>
 
         <!-- Staff Balance Display -->
@@ -2483,7 +2483,7 @@ function generateTxnCode() {
             "💰 المبلغ: " + parseFloat(amount).toFixed(2) + " $\n" +
             "💎 الرصيد: " + parseFloat(balance).toFixed(2) + " $\n" +
             "💳 المديونية: " + parseFloat(debt).toFixed(2) + " $\n\n" +
-            "🙏 شكراً لثقتكم بـ وكالة الشركة المتحده 👑\n" +
+            "🙏 شكراً لثقتكم بـ وكالة القطة الشقية 👑\n" +
             "⏰ " + now;
 
         const waLink = "https://api.whatsapp.com/send?phone=" + cleanPhone + "&text=" + encodeURIComponent(message);
@@ -2540,7 +2540,7 @@ function generateTxnCode() {
         if (!table) { alert('لا توجد بيانات للتحميل!'); return; }
         let reportHtml = '<div id="pdf-report" style="width:210mm;padding:15mm;background:#ffffff;direction:rtl;font-family:Arial,sans-serif;color:#000;box-sizing:border-box;">';
         reportHtml += '<div style="text-align:center;margin-bottom:15px;">';
-        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">United Agency</h2>';
+        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">Cheeky Cat Agency</h2>';
         reportHtml += '<h3 style="color:#333;margin:5px 0;font-size:16px;">فاتورة معاملات الرصيد</h3>';
         reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">' + headerText + '</p>';
         reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">تاريخ الفاتورة: ' + new Date().toLocaleDateString('en-US') + '</p>';
@@ -2626,7 +2626,7 @@ function generateTxnCode() {
         if (!table) { alert('لا توجد بيانات للتحميل!'); return; }
         let reportHtml = '<div id="pdf-report" style="width:210mm;padding:15mm;background:#ffffff;direction:rtl;font-family:Arial,sans-serif;color:#000;box-sizing:border-box;">';
         reportHtml += '<div style="text-align:center;margin-bottom:15px;">';
-        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">United Agency</h2>';
+        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">Cheeky Cat Agency</h2>';
         reportHtml += '<h3 style="color:#333;margin:5px 0;font-size:16px;">فاتورة معاملات الرصيد المشترك</h3>';
         reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">' + headerText + '</p>';
         reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">تاريخ الفاتورة: ' + new Date().toLocaleDateString('en-US') + '</p>';
@@ -3600,7 +3600,7 @@ function generateTxnCode() {
 
             let reportHtml = '<div id="pdf-report" style="width:210mm;padding:15mm;background:#ffffff;direction:rtl;font-family:Arial,sans-serif;color:#000;box-sizing:border-box;">';
             reportHtml += '<div style="text-align:center;margin-bottom:15px;">';
-            reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">United Agency</h2>';
+            reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">Cheeky Cat Agency</h2>';
             reportHtml += '<h3 style="color:#333;margin:5px 0;font-size:16px;">تقرير جميع دفعات العملاء</h3>';
             reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">تاريخ التقرير: ' + new Date().toLocaleDateString('en-US') + '</p>';
             reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">إجمالي الدفعات: ' + totalPaid.toFixed(2) + ' $ | عدد العمليات: ' + allPayments.length + '</p>';
@@ -3667,7 +3667,7 @@ function generateTxnCode() {
 
             let reportHtml = '<div id="pdf-report" style="width:210mm;padding:15mm;background:#ffffff;direction:rtl;font-family:Arial,sans-serif;color:#000;box-sizing:border-box;">';
             reportHtml += '<div style="text-align:center;margin-bottom:15px;">';
-            reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">United Agency</h2>';
+            reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">Cheeky Cat Agency</h2>';
             reportHtml += '<h3 style="color:#333;margin:5px 0;font-size:16px;">فاتورة دفعات العميل</h3>';
             reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">العميل: ' + clientName + '</p>';
             reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">تاريخ الفاتورة: ' + new Date().toLocaleDateString('en-US') + '</p>';
@@ -4288,7 +4288,7 @@ function notifyRequestApproved(requestData, staffName) {
 
             let reportHtml = '<div id="pdf-report" style="width:210mm;padding:15mm;background:#ffffff;direction:rtl;font-family:Arial,sans-serif;color:#000;box-sizing:border-box;">';
             reportHtml += '<div style="text-align:center;margin-bottom:15px;">';
-            reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">United Agency</h2>';
+            reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">Cheeky Cat Agency</h2>';
             reportHtml += '<h3 style="color:#333;margin:5px 0;font-size:16px;">فاتورة استخدام الرصيد المشترك</h3>';
             reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">تاريخ الفاتورة: ' + new Date().toLocaleDateString('en-US') + '</p>';
             reportHtml += '<hr style="border:1px solid #cc0000;margin:10px 0;"></div>';
@@ -4444,7 +4444,7 @@ function notifyRequestApproved(requestData, staffName) {
 
             // Build WhatsApp message
             const nowStr = new Date().toLocaleString('ar-EG');
-            let waMsg = '*\uD83D\uDCCB \u0641\u062D\u0635 \u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 - \u0627\u0644\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u062A\u062D\u062F\u0629 \uD83D\uDC51*\n\n';
+            let waMsg = '*\uD83D\uDCCB \u0641\u062D\u0635 \u0627\u0644\u0645\u062F\u064A\u0648\u0646\u064A\u0629 - \u0627\u0644\u0642\u0637\u0629 \u0627\u0644\u0634\u0642\u064A\u0629 \uD83D\uDC51*\n\n';
             waMsg += '\uD83D\uDC64 *\u0627\u0644\u0639\u0645\u064A\u0644:* ' + found.name + '\n';
             waMsg += '\uD83C\uDD94 *ID:* ' + found.id + '\n';
             if (found.whatsapp) waMsg += '\uD83D\uDCF1 *\u0648\u0627\u062A\u0633\u0627\u0628:* ' + found.whatsapp + '\n';
@@ -4461,7 +4461,7 @@ function notifyRequestApproved(requestData, staffName) {
                 waMsg += '\uD83D\uDCCA *\u0639\u062F\u062F \u0627\u0644\u0634\u062D\u0646\u0627\u062A \u0641\u064A \u0627\u0644\u0641\u062A\u0631\u0629:* ' + filteredLogs.length + '\n';
             }
             waMsg += '\n\u23F0 *\u062A\u0627\u0631\u064A\u062E \u0627\u0644\u0641\u062D\u0635:* ' + nowStr + '\n';
-            waMsg += '\n\uD83D\uDE4F \u0634\u0643\u0631\u0627\u064B \u0644\u062B\u0642\u062A\u0643\u0645 \u0628\u0640 \u0627\u0644\u0634\u0631\u0643\u0629 \u0627\u0644\u0645\u062A\u062D\u062F\u0629 \uD83D\uDC51';
+            waMsg += '\n\uD83D\uDE4F \u0634\u0643\u0631\u0627\u064B \u0644\u062B\u0642\u062A\u0643\u0645 \u0628\u0640 \u0627\u0644\u0642\u0637\u0629 \u0627\u0644\u0634\u0642\u064A\u0629 \uD83D\uDC51';
             const waPhone = found.whatsapp || (userAccLookup && userAccLookup.whatsapp ? userAccLookup.whatsapp : '');
             const waLink = waPhone ? 'https://api.whatsapp.com/send?phone=' + waPhone + '&text=' + encodeURIComponent(waMsg) : '';
 
@@ -4547,7 +4547,7 @@ function parseLogDate(dateStr) {
     function downloadPeriodReport(clientName, clientId, fromDate, toDate, totalDebt, totalCount) {
         let reportHtml = '<div id="pdf-report" style="width:210mm;padding:15mm;background:#ffffff;direction:rtl;font-family:Arial,sans-serif;color:#000;box-sizing:border-box;">';
         reportHtml += '<div style="text-align:center;margin-bottom:15px;">';
-        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">United Agency</h2>';
+        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">Cheeky Cat Agency</h2>';
         reportHtml += '<h3 style="color:#333;margin:5px 0;font-size:16px;">تقرير المديونية</h3>';
         reportHtml += '<hr style="border:1px solid #cc0000;margin:10px 0;">'; reportHtml += '</div>';
         reportHtml += '<table style="width:100%;border-collapse:collapse;margin-bottom:15px;font-size:12px;color:#000;">';
@@ -4610,7 +4610,7 @@ function parseLogDate(dateStr) {
         let totalAllDebts = 0, totalAllOrders = 0;
         let reportHtml = '<div id="pdf-report" style="width:210mm;padding:15mm;background:#ffffff;direction:rtl;font-family:Arial,sans-serif;color:#000;box-sizing:border-box;">';
         reportHtml += '<div style="text-align:center;margin-bottom:15px;">';
-        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">United Agency</h2>';
+        reportHtml += '<h2 style="color:#cc0000;margin:0;font-size:22px;">Cheeky Cat Agency</h2>';
         reportHtml += '<h3 style="color:#333;margin:5px 0;font-size:16px;">تقرير جميع المديونيات</h3>';
         reportHtml += '<p style="color:#666;font-size:12px;margin:5px 0;">تاريخ التقرير: ' + new Date().toLocaleDateString('en-US') + ' | عدد العملاء: ' + clientsDatabase.length + '</p>';
         reportHtml += '<hr style="border:1px solid #cc0000;margin:10px 0;">'; reportHtml += '</div>';
@@ -5071,8 +5071,8 @@ function toggleA(id) {
 <div id="botWindow">
     <div id="botHeader">
         <button id="botCloseBtn" onclick="document.getElementById('botWindow').style.display='none'; document.getElementById('botToggle').style.display='flex';">✕</button>
-        <img src="https://i.postimg.cc/gcfWLLzg/images.jpg" class="bot-avatar-header" alt=" مساعد الشركة المتحده" onerror="this.style.display='none'">
-        <span> مساعد الشركة المتحده</span>
+        <img src="https://i.postimg.cc/gcfWLLzg/images.jpg" class="bot-avatar-header" alt=" مساعد القطة الشقية" onerror="this.style.display='none'">
+        <span> مساعد القطة الشقية</span>
     </div>
     <div id="botContent">
         <div class="botQ" onclick="toggleA('a1')">❓ كيف أسجل دخول كمستخدم؟</div>
@@ -5081,7 +5081,7 @@ function toggleA(id) {
             1. من الصفحة الرئيسية مباشرة<br>
             2. أدخل اسم المستخدم والباسورد<br>
             3. اضغط "تسجيل الدخول"<br><br>
-            💡 إذا نسيت الباسورد، تواصل مع إدارة الشركة المتحده
+            💡 إذا نسيت الباسورد، تواصل مع إدارة القطة الشقية
         </div>
 
         <div class="botQ" onclick="toggleA('a2')">❓ كيف أطلب شحن؟</div>
@@ -5141,7 +5141,7 @@ function toggleA(id) {
         <div class="botA" id="a7">
             📞 <b>الدعم:</b><br><br>
             • المطور: ✯͜͡𝑲𝑨𝑹𝑬𝑴✘<br>
-            • النظام: United Agency<br>
+            • النظام: Cheeky Cat Agency<br>
             • للمساعدة الفنية تواصل مع الإدارة<br><br>
             📱 <b>واتساب الدعم الفني:</b><br>
             <a href="https://api.whatsapp.com/send?phone=201200087007" target="_blank" style="color:#25D366; font-weight:bold; text-decoration:none; font-size:14px;">+20 12 00087007</a><br><br>
@@ -5154,7 +5154,7 @@ function toggleA(id) {
 </div>
 
 <button id="botToggle" onclick="document.getElementById('botWindow').style.display='block'; this.style.display='none';">
-    <img src="https://i.postimg.cc/gcfWLLzg/images.jpg" class="bot-avatar" alt="مساعد الشركة المتحده" onerror="this.innerHTML='<span style=font-size:32px;>🤖</span>'">
+    <img src="https://i.postimg.cc/gcfWLLzg/images.jpg" class="bot-avatar" alt="مساعد القطة الشقية" onerror="this.innerHTML='<span style=font-size:32px;>🤖</span>'">
 </button>
 
 <!-- Theme Toggle Button -->
