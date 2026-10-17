@@ -194,13 +194,50 @@
         .table-wrapper table { min-width: 100%; }
         /* ====== APPS GRID ====== */
         .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 14px; margin: 20px 0; }
-        .app-card { background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 16px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; }
+        .app-card { background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 16px; padding: 14px 4px; text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; }
         .app-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg,rgba(255,26,26,0.1),transparent); opacity: 0; transition: opacity 0.3s ease; }
         .app-card:hover { border-color: var(--primary-color); transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px rgba(255,26,26,0.2); }
         .app-card:hover::before { opacity: 1; }
         .app-card.selected { border-color: var(--success-color); box-shadow: 0 0 20px rgba(0,204,102,0.3); background: rgba(0,204,102,0.1); }
         .app-card.selected::after { content: '✓'; position: absolute; top: 6px; right: 6px; background: var(--success-color); color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
         .app-card .app-icon { width: 56px; height: 56px; border-radius: 14px; object-fit: cover; margin-bottom: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s ease; }
+
+        /* ====== APP ICON FRAME (frame ON TOP of icon) ====== */
+        .app-frame {
+            width: 100%;
+            max-width: 120px;
+            aspect-ratio: 1 / 1;
+            height: auto;
+            position: relative;
+            margin: 0 auto 8px;
+            transition: transform 0.3s ease;
+        }
+        .app-card:hover .app-frame { transform: scale(1.08); }
+        .app-frame-circle {
+            position: absolute;
+            left: 49.9%; top: 64.4%;
+            transform: translate(-50%, -50%);
+            width: 51.8%; height: 44%;
+            border-radius: 50%;
+            overflow: hidden;
+            background: transparent;
+            z-index: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .app-frame-circle img {
+            width: 100% !important; height: 100% !important;
+            max-width: 100% !important; max-height: 100% !important;
+            object-fit: cover; display: block;
+            border: none !important; box-shadow: none !important; margin: 0 !important;
+        }
+        .app-frame-circle .frame-placeholder { font-size: 18px; line-height: 1; }
+        .frame-overlay {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: contain;
+            z-index: 1;
+            pointer-events: none;
+        }
         .app-card:hover .app-icon { transform: scale(1.1); }
         .app-card .app-name { font-size: 12px; font-weight: 700; color: var(--text-color); margin-bottom: 2px; position: relative; z-index: 1; }
         .app-card .app-desc { font-size: 10px; color: var(--text-secondary); position: relative; z-index: 1; }
@@ -445,6 +482,69 @@
             .hamburger-menu { top: 10px; right: 10px; width: 40px; height: 40px; }
             .hamburger-line { width: 20px; }
             .login-menu-panel { width: 260px; }
+        }
+
+        /* ====== USER PORTAL MENU BUTTON ====== */
+        .user-menu-btn {
+            position: fixed; top: 15px; right: 15px;
+            width: 45px; height: 45px;
+            background: var(--glass-bg); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            cursor: pointer; z-index: 1000;
+            display: none; align-items: center; justify-content: center;
+            font-size: 22px; color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(255,26,26,0.2);
+            transition: all 0.3s ease;
+            line-height: 1; padding: 0;
+        }
+        .user-menu-btn:hover {
+            background: rgba(255,26,26,0.2);
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255,26,26,0.4);
+        }
+        #userBalanceSection, #userOrdersSection, #userPaymentsSection { scroll-margin-top: 70px; }
+
+        /* ====== USER SIDE PANEL CONTENT ====== */
+        .user-side-panel { width: 320px; }
+        .user-menu-avatar {
+            font-size: 58px; text-align: center; line-height: 1;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 18px rgba(255,215,0,0.45));
+            animation: crownGlow 2.5s ease-in-out infinite;
+        }
+        .user-menu-name {
+            text-align: center; color: var(--primary-color);
+            font-weight: 800; font-size: 19px; margin-bottom: 6px;
+            text-shadow: 0 0 15px rgba(255,140,66,0.4);
+        }
+        .user-menu-cards { display: flex; gap: 10px; margin-bottom: 14px; }
+        .user-menu-card {
+            flex: 1; border-radius: 14px; padding: 12px 6px; text-align: center;
+            transition: all 0.3s ease;
+        }
+        .user-menu-card:hover { transform: translateY(-3px); }
+        .card-balance { background: rgba(0,204,102,0.12); border: 1px solid var(--success-color); box-shadow: 0 0 15px rgba(0,204,102,0.15); }
+        .card-balance .umc-value { color: var(--success-color); text-shadow: 0 0 12px rgba(0,204,102,0.5); }
+        .card-debt { background: rgba(255,68,68,0.12); border: 1px solid var(--danger-color); box-shadow: 0 0 15px rgba(255,68,68,0.15); }
+        .card-debt .umc-value { color: var(--danger-color); text-shadow: 0 0 12px rgba(255,68,68,0.5); }
+        .umc-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; font-weight: 700; }
+        .umc-value { font-size: 21px; font-weight: 800; }
+        .user-menu-tabs { display: flex; gap: 10px; margin-bottom: 12px; }
+        .user-menu-tab-btn {
+            flex: 1; margin: 0; padding: 11px 6px; font-size: 13px; border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            opacity: 0.65; transition: all 0.3s ease;
+        }
+        .user-menu-tab-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+        .user-menu-tab-btn.active { opacity: 1; box-shadow: 0 0 18px rgba(255,140,66,0.45); transform: translateY(-2px); }
+        .user-menu-body { flex: 1; overflow-y: auto; min-height: 180px; }
+        .user-menu-body .user-orders-table { font-size: 11px; }
+        .user-menu-body .user-orders-table th, .user-menu-body .user-orders-table td { padding: 7px 4px; }
+
+        @media (max-width:600px) {
+            .user-menu-btn { top: 10px; right: 10px; width: 40px; height: 40px; font-size: 20px; }
+            .user-side-panel { width: 290px; }
         }
     
 /* ====== FAQ BOT STYLES ====== */
@@ -1455,7 +1555,7 @@
         </div>
         <div class="form-group">
             <label>📱 رقم واتساب الجديد (مع كود الدولة)</label>
-            <input type="text" id="editWhatsappNewNumber" placeholder="مثال: 201200087007">
+            <input type="text" id="editWhatsappNewNumber" placeholder="مثال: 201210374419">
             <p style="color: var(--text-secondary); font-size: 11px; margin-top: 4px;">💡 اكتب الرقم بدون + أو مسافات</p>
         </div>
         <div class="confirm-buttons">
@@ -1516,6 +1616,48 @@
 </div>
 
 
+
+<!-- ====== USER PORTAL SIDE MENU (القائمة الجانبية) ====== -->
+<button id="userMenuBtn" class="user-menu-btn" onclick="toggleUserMenu(); refreshUserMenuData();" title="القائمة" style="display:none;">☰</button>
+
+<div id="userMenuOverlay" class="login-menu-overlay" onclick="closeUserMenu(event)">
+    <div class="login-menu-panel user-side-panel" onclick="event.stopPropagation()">
+        <div class="login-menu-header" style="position:relative;">
+            <div class="login-menu-close" style="position:absolute; top:-40px; left:0;" onclick="toggleUserMenu()">✕</div>
+            <div class="user-menu-avatar">🐱</div>
+            <div class="user-menu-name" id="menuUserName">🐱 المستخدم</div>
+        </div>
+
+        <div class="user-menu-cards">
+            <div class="user-menu-card card-balance">
+                <div class="umc-label">💎 الرصيد</div>
+                <div class="umc-value" id="menuUserBalance">$ 0.00</div>
+            </div>
+            <div class="user-menu-card card-debt">
+                <div class="umc-label">📉 المديونية</div>
+                <div class="umc-value" id="menuUserDebt">$ 0.00</div>
+            </div>
+        </div>
+
+        <div class="user-menu-tabs">
+            <button class="user-menu-tab-btn active" id="menuTabOrders" onclick="menuShowTab('orders')">📋 طلباتي</button>
+            <button class="user-menu-tab-btn" id="menuTabPayments" onclick="menuShowTab('payments')">💵 سجل الدفعات</button>
+        </div>
+
+        <div class="user-menu-body">
+            <div id="menuOrdersWrap">
+                <div id="menuOrdersContainer">
+                    <div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد طلبات حتى الآن</p></div>
+                </div>
+            </div>
+            <div id="menuPaymentsWrap" style="display:none;">
+                <div id="menuPaymentsContainer">
+                    <div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد دفعات مسجلة حتى الآن</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <!-- LOGIN PAGE -->
@@ -1712,6 +1854,12 @@
             <div class="staff-balance-value" id="staffBalanceValue">0.00</div>
             <div class="staff-balance-currency">دولار أمريكي</div>
         </div>
+        <div class="box-light" style="padding-top:5px;">
+            <div class="section-toggle" onclick="toggleSection(this)">
+                <h3 style="margin:0;">🔍 فحص فوري للمديونيات والحساب</h3>
+                <span class="toggle-arrow">▼</span>
+            </div>
+            <div class="section-content">
         <div class="search-container">
             <label style="color: var(--primary-color); font-weight: bold;">🔍 فحص فوري للمديونيات والحساب:</label>
             <div class="flex-group">
@@ -1724,10 +1872,26 @@
             </div>
             <div id="searchResult" class="search-result-box"></div>
         </div>
-        <div class="flex-group" style="margin-bottom: 20px;">
+            </div>
+        </div>
+        <div class="box-light">
+            <div class="section-toggle" onclick="toggleSection(this)">
+                <h3 style="margin:0;">➕ إضافة وكيل / مستخدم جديد</h3>
+                <span class="toggle-arrow">▼</span>
+            </div>
+            <div class="section-content">
+        <div class="flex-group" style="margin-bottom: 0; padding-top:5px;">
             <button type="button" class="btn-blue" onclick="showAddClientModal('وكيل')">+ إضافة وكيل جديد</button>
             <button type="button" class="btn-blue" onclick="showAddClientModal('مستخدم')">+ إضافة مستخدم جديد</button>
         </div>
+            </div>
+        </div>
+        <div class="box-light">
+            <div class="section-toggle" onclick="toggleSection(this)">
+                <h3 style="margin:0;">📦 تسجيل شحنة جديدة (الفئة المستهدفة)</h3>
+                <span class="toggle-arrow">▼</span>
+            </div>
+            <div class="section-content">
         <form id="shippingForm" onsubmit="handleShippingSubmit(event)">
             <div class="form-group">
                 <label>الفئة المستهدفة</label>
@@ -1766,6 +1930,8 @@
             <button type="submit">إرسال وتوثيق سحابي</button>
             <button type="button" class="btn-secondary" onclick="logoutStaff()">تسجيل خروج</button>
         </form>
+            </div>
+        </div>
     </div>
 
     <!-- USER PORTAL -->
@@ -1779,20 +1945,7 @@
             <div class="warning-sub">لا يمكنك تقديم طلب جديد حتى يتم معالجة طلبك الحالي. يرجى الانتظار.</div>
         </div>
 
-<div class="balance-display">
-            <div class="balance-icon">💎</div>
-            <div class="balance-label">الرصيد المتاح (للعرض فقط)</div>
-            <div class="balance-value" id="userBalanceValue">0.00</div>
-            <div class="balance-currency">دولار أمريكي</div>
-        </div>
-
-        <div class="debt-display">
-            <div class="debt-label">💰 المديونية الحالية</div>
-            <div class="debt-value" id="userDebtValue">0.00</div>
-            <div class="debt-currency">دولار أمريكي</div>
-        </div>
-
-        <div class="box-light">
+<div class="box-light">
             <div class="section-title">
                 <span class="section-icon">🎮</span>
                 <h3>اختر البرنامج / اللعبة</h3>
@@ -1841,31 +1994,6 @@
             <p style="color: var(--text-secondary); font-size: 11px; margin-top: 8px; text-align: center;">💡 الرصيد للعرض فقط - المبلغ سيضاف للمديونية</p>
             </form>
         </div>
-        <div class="box-light">
-            <div class="section-title">
-                <span class="section-icon">📋</span>
-                <h3>طلباتي</h3>
-            </div>
-            <div id="userOrdersContainer">
-                <div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد طلبات حتى الآن</p></div>
-            </div>
-        </div>
-
-        <!-- سجل الدفعات الجزئية -->
-        <div class="box-light" style="border: 1px solid var(--success-color); margin-top: 20px;">
-            <div class="section-title">
-                <span class="section-icon">💵</span>
-                <h3>سجل الدفعات</h3>
-            </div>
-            <div id="userPaymentsSummary" style="background: linear-gradient(135deg, rgba(0,204,102,0.1), rgba(0,153,77,0.1)); border: 1px solid var(--success-color); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 16px; display: none;">
-                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px;">إجمالي الدفعات المسددة</div>
-                <div style="font-size: 32px; font-weight: 800; color: var(--success-color); text-shadow: 0 0 20px rgba(0,204,102,0.5);" id="userTotalPayments">0.00</div>
-                <div style="font-size: 14px; color: var(--text-secondary);">دولار أمريكي</div>
-            </div>
-            <div id="userPaymentsContainer">
-                <div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد دفعات مسجلة حتى الآن</p></div>
-            </div>
-        </div>
         <button type="button" class="btn-secondary" onclick="logoutUser()" style="margin-top: 20px;">تسجيل خروج</button>
     </div>
 
@@ -1911,6 +2039,15 @@
                 <span class="section-icon">🎮</span>
                 </div>
             <div id="adminAppsList"></div>
+            <div class="add-app-form" style="margin-bottom:15px;">
+                <h4>🖼️ فريم الأيقونات الافتراضي</h4>
+                <div class="form-group">
+                    <label>رابط صورة الفريم (اتركه فاضي للفريم الأبيض الافتراضي):</label>
+                    <input type="url" id="frameUrlInput" placeholder="https://...">
+                    <p style="color: var(--text-secondary); font-size: 11px; margin-top: 4px;">💡 لو سيبتها فاضية هيشتغل فريم القطة الشقية الافتراضي — لو عايز فريم تاني حط لينكه هنا</p>
+                </div>
+                <button type="button" onclick="saveFrameUrl()" style="background: linear-gradient(135deg, var(--accent-purple), #7d3c98) !important;">💾 حفظ الفريم</button>
+            </div>
             <div class="add-app-form">
                 <h4>➕ إضافة برنامج / لعبة جديدة</h4>
                 <div class="form-group">
@@ -2044,7 +2181,7 @@
                 <div class="form-group"><label>الباسورد</label><input type="text" id="newUserAccPass" required placeholder="باسورد المستخدم"></div>
                 <div class="form-group">
                     <label>📱 رقم واتساب (مع كود الدولة)</label>
-                    <input type="text" id="newUserAccWhatsapp" placeholder="مثال: 201200087007">
+                    <input type="text" id="newUserAccWhatsapp" placeholder="مثال: 201210374419">
                     <p style="color: var(--text-secondary); font-size: 11px; margin-top: 4px;">💡 اكتب الرقم بدون + أو مسافات</p>
                 </div>
                 <button type="submit" style="background: linear-gradient(135deg, var(--warning-color), #ff5500) !important; color: #fff;">🚀 إنشاء حساب المستخدم</button>
@@ -2148,8 +2285,8 @@
                 <div class="form-group"><label>الـ ID الثابت</label><input type="text" id="newClientId" required></div>
             <div class="form-group">
                 <label>📱 رقم واتساب (مع كود الدولة)</label>
-                <input type="text" id="newClientWhatsapp" placeholder="مثال: 201200087007">
-                <p style="color: var(--text-secondary); font-size: 11px; margin-top: 4px;">💡 اكتب الرقم بدون + أو مسافات. مثال: 201200087007</p>
+                <input type="text" id="newClientWhatsapp" placeholder="مثال: 201210374419">
+                <p style="color: var(--text-secondary); font-size: 11px; margin-top: 4px;">💡 اكتب الرقم بدون + أو مسافات. مثال: 201210374419</p>
             </div>
                 <button type="submit" style="background: linear-gradient(135deg, var(--success-color), #00994d) !important; color: #fff;">اعتماد العميل</button>
                 <button type="button" class="btn-secondary" onclick="backToDashboard()">إلغاء</button>
@@ -2174,7 +2311,8 @@
     let staffAccounts = [], clientsDatabase = [], userAccounts = [];
     let currentLoggedStaff = null, currentLoggedUser = null;
     let currentAddingType = "وكيل";
-    let globalScriptUrl = "", globalSheetUrl = "";
+    let globalScriptUrl = "", globalSheetUrl = "", globalFrameUrl = "";
+    const DEFAULT_FRAME_URL = 'https://i.postimg.cc/QtRdPVSm/file-0000000001d48210ad860ca85fe0a6d4.png';
     let currentLoginType = 'staff';
     let pendingNotifications = [];
     let telegramBots = [];
@@ -2251,7 +2389,17 @@
             const isSelected = selectedApp && selectedApp._key === app._key;
             const selectedClass = isSelected ? 'selected' : '';
             html += '<div class="app-card ' + selectedClass + '" onclick="selectApp(\'' + app._key + '\')">';
-            html += '<img class="app-icon" src="' + (app.icon || fallbackImg) + '" alt="' + (app.name || '') + '" onerror="this.src=\'' + fallbackImg + '\'">';
+            const effFrame = globalFrameUrl || DEFAULT_FRAME_URL;
+            html += '<div class="app-frame">';
+            html += '<div class="app-frame-circle">';
+            if (app.icon) {
+                html += '<img src="' + app.icon + '" alt="" onerror="this.parentNode.innerHTML=\'<span class=&quot;frame-placeholder&quot;>📱</span>\'">';
+            } else {
+                html += '<span class="frame-placeholder">📱</span>';
+            }
+            html += '</div>';
+            html += '<img class="frame-overlay" src="' + effFrame + '" alt="" onerror="this.style.display=\'none\'">';
+            html += '</div>';
             html += '<div class="app-name">' + (app.name || 'بدون اسم') + '</div>';
             html += '<div class="app-desc">' + (app.description || '') + '</div>';
             html += '</div>';
@@ -2303,6 +2451,16 @@
             descDiv.innerText = app.description || '';
         }
         showToast('✅ تم اختيار: ' + app.name);
+    }
+
+    function saveFrameUrl() {
+        const url = document.getElementById('frameUrlInput').value.trim();
+        db.ref('settings').update({ frameUrl: url }).then(() => {
+            console.log('frameUrl saved:', url);
+            globalFrameUrl = url;
+            renderAppsGrid();
+            showToast(url ? '✅ تم حفظ الفريم الجديد!' : '✅ رجعنا للفريم الافتراضي (القطة الشقية)');
+        }).catch(err => { alert('❌ خطأ: ' + err.message); });
     }
 
     function addApp() {
@@ -2576,13 +2734,13 @@ function generateTxnCode() {
         if (cleanPhone.startsWith('+')) cleanPhone = cleanPhone.substring(1);
 
         const now = new Date().toLocaleString('ar-EG');
-        const message = 
-            "✅ تم الشحن بنجاح!\n\n" +
+        const message =
+            "✅ *تم الشحن بنجاح!*\n\n" +
             "👤 العميل: " + clientName + "\n" +
             "💰 المبلغ: " + parseFloat(amount).toFixed(2) + " $\n" +
             "💎 الرصيد: " + parseFloat(balance).toFixed(2) + " $\n" +
-            "💳 المديونية: " + parseFloat(debt).toFixed(2) + " $\n\n" +
-            "🙏 شكراً لثقتكم بـ وكالة القطة الشقية 👑\n" +
+            "💳 *المديونية عليك الآن: " + parseFloat(debt).toFixed(2) + " $*\n\n" +
+            "🙏 شكراً لثقتكم بـ وكالة القطة الشقية 🐱\n" +
             "⏰ " + now;
 
         const waLink = "https://api.whatsapp.com/send?phone=" + cleanPhone + "&text=" + encodeURIComponent(message);
@@ -2955,6 +3113,10 @@ function generateTxnCode() {
         const val = snapshot.val() || {};
         globalScriptUrl = val.scriptUrl || "";
         globalSheetUrl = val.sheetUrl || "";
+        globalFrameUrl = val.frameUrl || "";
+        const frameInput = document.getElementById('frameUrlInput');
+        if (frameInput && document.activeElement !== frameInput) frameInput.value = globalFrameUrl;
+        renderAppsGrid();
         const scriptInput = document.getElementById('scriptUrlInput');
         const sheetInput = document.getElementById('sheetUrlInput');
         if(scriptInput) scriptInput.value = globalScriptUrl;
@@ -3135,21 +3297,19 @@ function generateTxnCode() {
                 msg += '\n📊 تم خصم ' + reqData.amount.toFixed(2) + ' $ من الرصيد المشترك للموظفين.';
                 msg += '\n💰 تمت إضافة المبلغ للمديونية.';
                 alert(msg);
-                // إرسال إشعار واتساب للعميل
+                // إرسال إشعار واتساب تلقائي للعميل
                 const clientForWa = clientsDatabase.find(c => c.id === reqData.userId);
                 const userAccForWa = userAccounts.find(u => u.id === reqData.userId);
                 if (clientForWa && clientForWa.whatsapp) {
                     setTimeout(() => {
-                        if (confirm("📱 هل تريد إرسال إشعار واتساب للعميل الآن؟")) {
-                            sendWhatsAppNotification(
-                                clientForWa.whatsapp,
-                                reqData.userName,
-                                reqData.amount,
-                                userAccForWa ? (userAccForWa.balance || 0) : 0,
-                                newUserDebt
-                            );
-                        }
-                    }, 500);
+                        sendWhatsAppNotification(
+                            clientForWa.whatsapp,
+                            reqData.userName,
+                            reqData.amount,
+                            userAccForWa ? (userAccForWa.balance || 0) : 0,
+                            newUserDebt
+                        );
+                    }, 600);
                 }
                 updateNotificationBadge();
             });
@@ -3179,8 +3339,8 @@ function generateTxnCode() {
                 currentLoggedUser.debt = freshData.debt || 0;
             }
             document.getElementById('userBadge').innerHTML = 'المستخدم: <strong>' + currentLoggedUser.name + '</strong> | ID: ' + currentLoggedUser.id;
-            document.getElementById('userBalanceValue').innerText = (currentLoggedUser.balance || 0).toFixed(2);
-            document.getElementById('userDebtValue').innerText = (currentLoggedUser.debt || 0).toFixed(2);
+            var elB = document.getElementById('userBalanceValue'); if (elB) elB.innerText = (currentLoggedUser.balance || 0).toFixed(2);
+            var elD = document.getElementById('userDebtValue'); if (elD) elD.innerText = (currentLoggedUser.debt || 0).toFixed(2);
             document.getElementById('userSelfIdDisplay').innerText = currentLoggedUser.id;
             loadUserOrders();
             loadUserPayments();
@@ -3207,7 +3367,7 @@ function generateTxnCode() {
 
     function loadUserOrders() {
         if(!currentLoggedUser) return;
-        const container = document.getElementById('userOrdersContainer');
+        const container = document.getElementById('userOrdersContainer') || document.createElement('div');
         Promise.all([
             db.ref('user_requests').orderByChild('userKey').equalTo(currentLoggedUser._key).once('value'),
             db.ref('shipping_logs').orderByChild('clientId').equalTo(currentLoggedUser.id).once('value')
@@ -3218,6 +3378,8 @@ function generateTxnCode() {
             allOrders.sort((a, b) => { const dateA = parseLogDate(a.time) || new Date(0); const dateB = parseLogDate(b.time) || new Date(0); return dateB - dateA; });
             if(allOrders.length === 0) {
                 container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد طلبات حتى الآن</p></div>';
+                const mC = document.getElementById('menuOrdersContainer');
+                if (mC) mC.innerHTML = container.innerHTML;
                 return;
             }
             let html = '<table class="user-orders-table">';
@@ -3233,12 +3395,14 @@ function generateTxnCode() {
             });
             html += '</tbody></table>';
             container.innerHTML = html;
+            const mC2 = document.getElementById('menuOrdersContainer');
+            if (mC2) mC2.innerHTML = html;
         });
     }
 
     function loadUserPayments() {
         if(!currentLoggedUser) return;
-        const container = document.getElementById('userPaymentsContainer');
+        const container = document.getElementById('userPaymentsContainer') || document.createElement('div');
         const summaryDiv = document.getElementById('userPaymentsSummary');
         const totalEl = document.getElementById('userTotalPayments');
 
@@ -3263,6 +3427,8 @@ function generateTxnCode() {
 
             if(payments.length === 0) {
                 container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>لا توجد دفعات مسجلة حتى الآن</p></div>';
+                const mP = document.getElementById('menuPaymentsContainer');
+                if (mP) mP.innerHTML = container.innerHTML;
                 return;
             }
 
@@ -3280,6 +3446,8 @@ function generateTxnCode() {
             });
             html += '</tbody></table>';
             container.innerHTML = html;
+            const mP2 = document.getElementById('menuPaymentsContainer');
+            if (mP2) mP2.innerHTML = html;
         }).catch(err => {
             console.error('Error loading user payments:', err);
             container.innerHTML = '<div class="empty-state"><div class="empty-icon">❌</div><p>خطأ في تحميل البيانات</p></div>';
@@ -3545,6 +3713,50 @@ function generateTxnCode() {
         const hamburger = document.querySelector('.hamburger-menu');
         overlay.classList.remove('active');
         hamburger.classList.remove('active');
+    }
+
+    // ====== USER PORTAL SIDE MENU ======
+    function toggleUserMenu() {
+        const overlay = document.getElementById('userMenuOverlay');
+        overlay.classList.toggle('active');
+    }
+    function closeUserMenu(event) {
+        if (event && event.target !== event.currentTarget) return;
+        document.getElementById('userMenuOverlay').classList.remove('active');
+    }
+    function scrollToUserSection(id) {
+        closeUserMenu();
+        const el = document.getElementById(id);
+        if (el) setTimeout(function(){ el.scrollIntoView({behavior:'smooth', block:'start'}); }, 150);
+    }
+    function menuShowTab(tab) {
+        const ordersWrap = document.getElementById('menuOrdersWrap');
+        const paymentsWrap = document.getElementById('menuPaymentsWrap');
+        if (ordersWrap) ordersWrap.style.display = tab === 'orders' ? 'block' : 'none';
+        if (paymentsWrap) paymentsWrap.style.display = tab === 'payments' ? 'block' : 'none';
+        const tOrders = document.getElementById('menuTabOrders');
+        const tPayments = document.getElementById('menuTabPayments');
+        if (tOrders) tOrders.classList.toggle('active', tab === 'orders');
+        if (tPayments) tPayments.classList.toggle('active', tab === 'payments');
+    }
+    function refreshUserMenuData() {
+        if (!currentLoggedUser) return;
+        const mName = document.getElementById('menuUserName');
+        const mBal = document.getElementById('menuUserBalance');
+        const mDebt = document.getElementById('menuUserDebt');
+        if (mName) mName.innerText = '🐱 ' + currentLoggedUser.name;
+        if (mBal) mBal.innerText = '$ ' + (currentLoggedUser.balance || 0).toFixed(2);
+        if (mDebt) mDebt.innerText = '$ ' + (currentLoggedUser.debt || 0).toFixed(2);
+        loadUserOrders();
+        loadUserPayments();
+    }
+    function updateUserMenuVisibility() {
+        const userPortal = document.getElementById('userPortalPage');
+        const btn = document.getElementById('userMenuBtn');
+        if (!btn) return;
+        const show = userPortal && userPortal.classList.contains('active');
+        btn.style.display = show ? 'flex' : 'none';
+        if (!show) closeUserMenu();
     }
 
     function settleDebt(key, name) {
@@ -3969,7 +4181,7 @@ function generateTxnCode() {
     function saveAdminSettings() {
         const scriptUrl = document.getElementById('scriptUrlInput').value.trim();
         const sheetUrl = document.getElementById('sheetUrlInput').value.trim();
-        db.ref('settings').set({ scriptUrl, sheetUrl }).then(() => alert("تم ربط الإكسل وتحديث المنظومة سحابياً!")).catch(() => alert("خطأ في الحفظ"));
+        db.ref('settings').update({ scriptUrl, sheetUrl }).then(() => alert("تم ربط الإكسل وتحديث المنظومة سحابياً!")).catch(() => alert("خطأ في الحفظ"));
     }
 
     function sendToGoogleSheet(actionType, payload) {
@@ -4823,21 +5035,21 @@ function parseLogDate(dateStr) {
             sendToGoogleSheet("appendRow", { staff: currentLoggedStaff, clientName: clientName, clientId: staticId, destination: chargeDestination === 'self' ? 'لنفسه' : 'للغير', chargedId: finalChargedId, amount: amount, time: formattedTime });
             notifyManualShipment(clientName, staticId, amount, chargeDestination === 'self' ? 'لنفسه' : 'للغير', finalChargedId, currentLoggedStaff, formattedTime);
             alert('تم الشحن وتوثيق الحركة في ملف إكسل العميل المخصص!');
-            // إرسال إشعار واتساب للعميل بالمديونية الصحيحة بعد الشحن
+            // إرسال إشعار واتساب تلقائي للعميل بالمديونية بعد الشحن
             const clientForWa = clientsDatabase.find(c => c.id === staticId);
             const userAccForWa = userAccounts.find(u => u.id === staticId);
             if (clientForWa && clientForWa.whatsapp) {
                 setTimeout(() => {
-                    if (confirm("📱 هل تريد إرسال إشعار واتساب للعميل؟")) {
-                        sendWhatsAppNotification(
-                            clientForWa.whatsapp,
-                            clientName,
-                            amount,
-                            userAccForWa ? (userAccForWa.balance || 0) : 0,
-                            finalUserDebt || finalClientDebt
-                        );
-                    }
-                }, 500);
+                    sendWhatsAppNotification(
+                        clientForWa.whatsapp,
+                        clientName,
+                        amount,
+                        userAccForWa ? (userAccForWa.balance || 0) : 0,
+                        finalUserDebt || finalClientDebt
+                    );
+                }, 600);
+            } else if (clientForWa && !clientForWa.whatsapp) {
+                showToast('⚠️ العميل بدون رقم واتساب — سجّل رقمه من زرار 📱 واتساب في لوحة المدير');
             }
             document.getElementById('chargeAmount').value = "";
             return deductStaffBalance(amount, clientName, staticId);
@@ -5029,11 +5241,10 @@ function parseLogDate(dateStr) {
     }
 
     // Restore collapsed states on page load
-    function restoreSectionStates() {
-        const adminPanel = document.getElementById('adminPanelPage');
-        if (!adminPanel) return;
+    function restoreSectionStates(panel) {
+        if (!panel) return;
 
-        const toggles = adminPanel.querySelectorAll('.section-toggle');
+        const toggles = panel.querySelectorAll('.section-toggle');
         toggles.forEach(toggle => {
             const sectionTitle = toggle.querySelector('h3');
             if (!sectionTitle) return;
@@ -5057,16 +5268,17 @@ function parseLogDate(dateStr) {
             const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
                     if (mutation.attributeName === 'class' && adminPanel.classList.contains('active')) {
-                        setTimeout(restoreSectionStates, 100);
+                        setTimeout(function(){ restoreSectionStates(adminPanel); }, 100);
                     }
                 });
             });
             observer.observe(adminPanel, { attributes: true });
             // Also restore if already active
             if (adminPanel.classList.contains('active')) {
-                setTimeout(restoreSectionStates, 100);
+                setTimeout(function(){ restoreSectionStates(adminPanel); }, 100);
             }
         }
+
     });
 
 
@@ -5087,6 +5299,15 @@ function toggleA(id) {
     // ====== FAQ BOT VISIBILITY ======
     function updateBotVisibility() {
         const loginPage = document.getElementById('loginPage');
+
+        // الهامبرجر القديم (دخول الموظف/المدير) يظهر فقط في صفحة تسجيل الدخول
+        const ham = document.querySelector('.hamburger-menu');
+        if (ham) {
+            const onLoginPage = loginPage && loginPage.classList.contains('active');
+            ham.style.display = onLoginPage ? 'flex' : 'none';
+            if (!onLoginPage) closeLoginMenu();
+        }
+
         const botToggle = document.getElementById('botToggle');
         const botWindow = document.getElementById('botWindow');
         const themeBtn = document.getElementById('themeToggleBtn');
@@ -5120,6 +5341,24 @@ function toggleA(id) {
 
     // Also check on initial load
     updateBotVisibility();
+
+    // Show/hide user portal menu button with the page
+    document.addEventListener('DOMContentLoaded', function() {
+        const userPortal = document.getElementById('userPortalPage');
+        if (userPortal) {
+            new MutationObserver(function(){ updateUserMenuVisibility(); }).observe(userPortal, { attributes: true });
+        }
+        updateUserMenuVisibility();
+    });
+
+    // Restore collapsible sections in the staff dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+        const dashPage = document.getElementById('dashboardPage');
+        if (dashPage) {
+            new MutationObserver(function(){ restoreSectionStates(dashPage); }).observe(dashPage, { attributes: true });
+            if (dashPage.classList.contains('active')) restoreSectionStates(dashPage);
+        }
+    });
     
 
 
@@ -5243,14 +5482,13 @@ function toggleA(id) {
         </div>
 
         <div class="botQ" onclick="toggleA('a7')">❓ الدعم الفني</div>
-        <div class="botA" id="a7">
-            📞 <b>الدعم:</b><br><br>
-            • المطور: ✯͜͡𝑲𝑨𝑹𝑬𝑴✘<br>
-            • النظام: Cheeky Cat Agency<br>
-            • للمساعدة الفنية تواصل مع الإدارة<br><br>
-            📱 <b>واتساب الدعم الفني:</b><br>
-            <a href="https://api.whatsapp.com/send?phone=201200087007" target="_blank" style="color:#25D366; font-weight:bold; text-decoration:none; font-size:14px;">+20 12 00087007</a><br><br>
-            💡 نصائح:<br>
+        <div class="botA" id="a7" style="text-align:center;">
+            📩 <b>عندك مشكلة أو استفسار؟</b><br><br>
+            <a href="https://t.me/ka256m" target="_blank" style="display:block; padding:12px; background:linear-gradient(135deg,#0088cc,#005580); color:#fff; border-radius:12px; font-weight:bold; text-decoration:none; font-size:15px; margin:8px 0;">✈️ للتواصل مع المطور اضغط هنا</a>
+            <a href="https://api.whatsapp.com/send?phone=201210374419" target="_blank" style="display:block; padding:10px; background:linear-gradient(135deg,#25D366,#128C7E); color:#fff; border-radius:12px; font-weight:bold; text-decoration:none; font-size:13px;">📱 واتساب المطور: +20 12 10374419</a>
+            <a href="https://api.whatsapp.com/send?phone=201200087007" target="_blank" style="display:block; padding:10px; background:linear-gradient(135deg,#25D366,#0e5e4a); color:#fff; border-radius:12px; font-weight:bold; text-decoration:none; font-size:13px; margin-top:6px;">📞 خدمة العملاء: +20 12 00087007</a>
+            <br>⏰ متاح يومياً — رد سريع<br><br>
+            💡 <b>نصائح:</b><br>
             • احفظ باسوردك في مكان آمن<br>
             • لا تشارك بياناتك مع أحد<br>
             • سجل الخروج بعد الانتهاء
